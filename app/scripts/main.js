@@ -1,36 +1,55 @@
 import React from 'react';
 
-var Startups = [
-    'http://rjvir.com',
-    'http://hellyeah.github.io'
-]
-
 var App = React.createClass({
-    getInitialState:function() {
+    getDefaultProps: function() {
+        return {
+            startups: [
+                'http://rjvir.com',
+                'http://hellyeah.github.io',
+                'http://lob.com',
+                'http://zerocater.com'
+            ]
+            //should load this dynamically from Parse
+            //should also run something that watches to make sure iframes work
+        }
+    },
+    propTypes: {
+        startups: React.PropTypes.array
+    },
+    getInitialState: function() {
         return {
             count: 0,
-            txt: 'http://rjvir.com',
-            red: 0,
-            green: 0,
-            blue: 0,
-            startup: 'http://rjvir.com'
         }
     },
     incrementCount: function() {
         this.setState({
             count: this.state.count + 1,
-            startup: Startups[this.state.count]
+            //startup: startups[this.state.count]
         })
     },
     render: function() {
+        var divStyle = {
+            overflow: 'hidden',
+            height: '100%'
+        }
         return (
-            <div>
-                {this.state.txt}
-                <h1>Count: {this.state.count}</h1>
-                <Next incrementCount={this.incrementCount}/>
+            <div style={divStyle}>
+                <div class="header">
+                    {this.state.txt}
+                    <h1>Count: {this.state.count}</h1>
+                    <Next incrementCount={this.incrementCount}/>
+                </div>
                 <InputURL update={this.update} />
-                <iframe src={this.state.startup}></iframe>
+                <StartupFrame startup={this.props.startups[this.state.count]}></StartupFrame>
             </div>
+        )
+    }
+})
+
+var StartupFrame = React.createClass({
+    render: function() {
+        return (
+            <iframe src={this.props.startup}></iframe>
         )
     }
 })
@@ -49,7 +68,7 @@ var Next = React.createClass({
     render: function() {
         return (
             <div>
-                <button type="button" onClick={this.props.incrementCount}>Increment</button>
+                <button type="button" onClick={this.props.incrementCount}>Next</button>
             </div>
         )
     }
