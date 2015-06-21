@@ -1,0 +1,16 @@
+general:
+  branches:
+    ignore:
+      - gh-pages
+dependencies:
+  override:
+    - npm install
+    - bower install
+test:
+  override:
+    - echo 'no tests'
+deployment:
+  production:
+    branch: master
+    commands:
+      - ./deploy.sh
